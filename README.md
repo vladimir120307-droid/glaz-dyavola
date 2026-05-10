@@ -129,10 +129,6 @@ glaz-dyavola/
 
 Инструмент применяется **только** к активам, которыми вы владеете или на которые есть письменное разрешение (RoE, in-scope BB, ASM-контракт, открытые регистры юрлиц). Подробнее — [`SECURITY.md`](SECURITY.md).
 
-### Вдохновение
-
-Архитектурно вдохновлено [Claude-OSINT](https://github.com/elementalsouls/Claude-OSINT) от ElementalSoul (модель asset-graph, severity-rubric). `Глаз Дьявола` это **независимая Python-имплементация** с фокусом на русскоязычный контур + MCP-интеграция; код мой собственный, лицензия MIT.
-
 ### Roadmap
 
 В разработке: дополнительные OSINT-модули — расширение people-OSINT, breach-correlation, deeper RU coverage (СПАРК/Контур через API-ключи). Скоуп остаётся пассивная разведка (см. [`SECURITY.md`](SECURITY.md)).
@@ -177,10 +173,6 @@ glaz secrets ./repo --sarif out.sarif
 glaz identity example.com
 glaz scan example.com --output report.json
 ```
-
-### Inspiration
-
-Architectural inspiration from [Claude-OSINT](https://github.com/elementalsouls/Claude-OSINT) by ElementalSoul (asset-graph model, severity rubric). `Devil's Eye` is an **independent Python implementation** focused on the Russian OSINT layer + MCP integration; codebase is original, MIT-licensed.
 
 ### License
 
