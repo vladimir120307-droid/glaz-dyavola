@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "glaz-dyavola"
-version = "0.2.0"
+version = "0.3.0"
 description = "Глаз Дьявола — OSINT-инструмент с русскоязычным контуром (DNS, subdomains, secrets, identity-fabric, ЕГРЮЛ/ВК/Яндекс)"
 readme = "README.md"
 requires-python = ">=3.10"

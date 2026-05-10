@@ -480,6 +480,125 @@ def validate_cmd(
         raise typer.Exit(1)
 
 
+# -------------- people --------------
+
+people_app = typer.Typer(name="people", help="People-OSINT: email permutations + username discovery.", no_args_is_help=True)
+app.add_typer(people_app)
+
+
+@people_app.command("emails")
+def people_emails_cmd(
+    first: str = typer.Argument(..., help="Имя"),
+    last: str = typer.Argument(..., help="Фамилия"),
+    domain: str = typer.Argument(..., help="Корпоративный домен"),
+    middle: str = typer.Option("", "--middle", help="Отчество (для RU-схем)"),
+    limit: int = typer.Option(10, "--limit", help="Сколько вариантов показать"),
+) -> None:
+    """Сгенерировать probable email-адреса по имени + домену."""
+    from glaz.modules.people import generate_email_permutations
+    guesses = generate_email_permutations(first, last, domain, middle=middle)
+    for g in guesses[:limit]:
+        rprint(f"  [bold]{g.address}[/]  [dim]w={g.weight:.2f}[/]")
+
+
+@people_app.command("usernames")
+def people_usernames_cmd(
+    username: str = typer.Argument(..., help="Username для проверки"),
+    platforms: str | None = typer.Option(None, "--platforms",
+                                          help="Список платформ через запятую (default: все)"),
+    only_found: bool = typer.Option(False, "--only-found", help="Показывать только существующие"),
+) -> None:
+    """Проверить существование username на 28 публичных платформах."""
+    from glaz.modules.people import check_usernames
+    plats = [s.strip() for s in platforms.split(",")] if platforms else None
+    results = asyncio.run(check_usernames(username, platforms=plats))
+    for r in results:
+        if only_found and not r.exists:
+            continue
+        mark = "[green]✓[/]" if r.exists else "[dim]✗[/]"
+        conf = f"[dim]({r.confidence})[/]"
+        rprint(f"  {mark} [bold]{r.platform:14}[/] {r.url}  {conf}")
+
+
+# -------------- ASN --------------
+
+@app.command("asn")
+def asn_cmd(
+    target: str = typer.Argument(..., help="IP-адрес или ASN-номер"),
+) -> None:
+    """ASN/netblock lookup. IP → ASN/CIDR/AS-name. Число → announced prefixes."""
+    from glaz.modules.asn import asn_for_ip, netblock_for_asn
+    if target.isdigit():
+        asn = int(target)
+        prefixes = netblock_for_asn(asn)
+        rprint(f"[bold]AS{asn}[/]: {len(prefixes)} announced prefixes")
+        for p in prefixes[:30]:
+            rprint(f"  {p}")
+    else:
+        rec = asn_for_ip(target)
+        rprint(f"[bold]IP:[/] {rec.ip}")
+        rprint(f"[bold]ASN:[/] AS{rec.asn or '?'} {rec.asn_name or ''}")
+        rprint(f"[bold]Netblock:[/] {rec.netblock or '?'}")
+        rprint(f"[bold]Country:[/] {rec.country or '?'}")
+
+
+# -------------- subdomains sweep --------------
+
+@app.command("sweep")
+def sweep_cmd(
+    domain: str = typer.Argument(..., help="Домен"),
+    workers: int = typer.Option(32, "--workers", help="Параллельных DNS-запросов"),
+    output: Path | None = typer.Option(None, "--output", "-o"),
+) -> None:
+    """Common-prefix sweep: 120+ корпоративных префиксов (admin/dev/api/staging/...)."""
+    from glaz.modules.subdomains import sweep
+    graph = AssetGraph()
+    found = asyncio.run(sweep(domain, workers=workers, graph=graph))
+    rprint(f"[bold green]{len(found)} существующих хостов:[/]")
+    for h in found:
+        rprint(f"  {h}")
+    if output:
+        write_report(output, FindingCollection(), graph)
+        rprint(f"[green]✓[/] {output}")
+
+
+# -------------- visualize --------------
+
+@app.command("visualize")
+def visualize_cmd(
+    report: Path = typer.Argument(..., exists=True, help="JSON-отчёт от `glaz scan`"),
+    fmt: str = typer.Option("mermaid", "--format", help="mermaid | dot"),
+    output: Path | None = typer.Option(None, "--output", "-o"),
+) -> None:
+    """Asset graph → Mermaid (для README) / DOT (для graphviz)."""
+    import json as _json
+
+    from glaz.core import AssetGraph as _AssetGraph
+    from glaz.core import to_dot, to_mermaid
+    from glaz.core.asset_graph import Asset as _Asset
+    from glaz.core.asset_graph import AssetType as _AssetType
+    from glaz.core.asset_graph import Edge as _Edge
+
+    data = _json.loads(report.read_text(encoding="utf-8"))
+    graph = _AssetGraph()
+    for a in (data.get("graph") or {}).get("assets", []):
+        graph.add_asset(_Asset(
+            id=a["id"], type=_AssetType(a["type"]), value=a["value"],
+            attributes=a.get("attributes", {}),
+            tags=a.get("tags", []),
+            discovered_by=a.get("discovered_by", "manual"),
+        ))
+    for e in (data.get("graph") or {}).get("edges", []):
+        graph.add_edge(_Edge(subject=e["subject"], relation=e["relation"], object=e["object"]))
+
+    out = to_mermaid(graph) if fmt == "mermaid" else to_dot(graph)
+    if output:
+        output.write_text(out, encoding="utf-8")
+        rprint(f"[green]✓[/] {output}")
+    else:
+        print(out)
+
+
 # -------------- agg-scan --------------
 
 @app.command("scan")
