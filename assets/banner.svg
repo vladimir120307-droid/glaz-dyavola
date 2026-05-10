@@ -1,246 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Inter,sans-serif">
   <defs>
-    <!-- Огненная радужка дракона -->
-    <radialGradient id="dragon-iris" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#fef9c3"/>
-      <stop offset="12%"  stop-color="#fde047"/>
-      <stop offset="28%"  stop-color="#facc15"/>
-      <stop offset="48%"  stop-color="#f97316"/>
-      <stop offset="70%"  stop-color="#dc2626"/>
-      <stop offset="88%"  stop-color="#7f1d1d"/>
-      <stop offset="100%" stop-color="#1a0303"/>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#fbbf24"/>
+      <stop offset="35%"  stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#450a0a"/>
     </radialGradient>
-
-    <!-- Веко: тёмно-багровое с переливом -->
-    <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#7f1d1d"/>
-      <stop offset="50%"  stop-color="#3f0808"/>
-      <stop offset="100%" stop-color="#1a0303"/>
-    </linearGradient>
-
-    <!-- Чешуя -->
-    <radialGradient id="scale" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#7f1d1d"/>
-      <stop offset="60%"  stop-color="#3f0808"/>
-      <stop offset="100%" stop-color="#1a0303"/>
-    </radialGradient>
-
-    <!-- Свечение -->
-    <radialGradient id="bg-glow" cx="23%" cy="50%" r="38%">
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
       <stop offset="0%"   stop-color="#dc2626" stop-opacity="0.45"/>
-      <stop offset="50%"  stop-color="#7f1d1d" stop-opacity="0.2"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
-
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%"   stop-color="#080000"/>
-      <stop offset="55%"  stop-color="#0e0303"/>
-      <stop offset="100%" stop-color="#1a0606"/>
-    </linearGradient>
-
-    <linearGradient id="pupil" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#1a0000"/>
-      <stop offset="50%"  stop-color="#000000"/>
-      <stop offset="100%" stop-color="#1a0000"/>
-    </linearGradient>
-
-    <clipPath id="iris-clip">
-      <circle cx="0" cy="0" r="92"/>
-    </clipPath>
-
-    <!-- Маска самого глаза для обрезки бликов и волокон -->
-    <clipPath id="eye-shape-clip">
-      <path d="M -240 0
-               L -170 -45 L -100 -75 L -30 -85
-               L 30 -85   L 100 -75 L 170 -45 L 240 0
-               L 170 45   L 100 75  L 30 85
-               L -30 85   L -100 75 L -170 45
-               Z"/>
-    </clipPath>
-
-    <!-- Один «чешуйчатый» элемент для паттерна -->
-    <symbol id="scale-shape" viewBox="-12 -12 24 24" overflow="visible">
-      <path d="M 0 -10 C 8 -10, 10 -2, 10 2 C 10 8, 5 10, 0 10 C -5 10, -10 8, -10 2 C -10 -2, -8 -10, 0 -10 Z"
-            fill="url(#scale)" stroke="#0a0000" stroke-width="0.6"/>
-    </symbol>
-
-    <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="2.5" result="b"/>
-      <feMerge>
-        <feMergeNode in="b"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
 
-  <!-- ===== Фон ===== -->
-  <rect width="1200" height="400" fill="url(#bg)"/>
-  <rect width="1200" height="400" fill="url(#bg-glow)"/>
+  <!-- Фон: чистый, без сетки -->
+  <rect width="1200" height="400" fill="#0a0606"/>
 
-  <!-- ===== Чешуя вокруг глаза ===== -->
-  <g transform="translate(280,200)" opacity="0.85">
-    <!-- ряд сверху -->
-    <g transform="translate(-220,-110)"><use href="#scale-shape"/></g>
-    <g transform="translate(-180,-130)"><use href="#scale-shape"/></g>
-    <g transform="translate(-130,-145)"><use href="#scale-shape"/></g>
-    <g transform="translate(-80,-155)"><use href="#scale-shape"/></g>
-    <g transform="translate(-30,-160)"><use href="#scale-shape"/></g>
-    <g transform="translate(30,-160)"><use href="#scale-shape"/></g>
-    <g transform="translate(80,-155)"><use href="#scale-shape"/></g>
-    <g transform="translate(130,-145)"><use href="#scale-shape"/></g>
-    <g transform="translate(180,-130)"><use href="#scale-shape"/></g>
-    <g transform="translate(220,-110)"><use href="#scale-shape"/></g>
+  <!-- Halo -->
+  <ellipse cx="240" cy="200" rx="280" ry="200" fill="url(#halo)"/>
 
-    <!-- 2-й ряд сверху, со смещением -->
-    <g transform="translate(-200,-80)"><use href="#scale-shape"/></g>
-    <g transform="translate(-155,-100)"><use href="#scale-shape"/></g>
-    <g transform="translate(-105,-115)"><use href="#scale-shape"/></g>
-    <g transform="translate(-55,-125)"><use href="#scale-shape"/></g>
-    <g transform="translate(0,-130)"><use href="#scale-shape"/></g>
-    <g transform="translate(55,-125)"><use href="#scale-shape"/></g>
-    <g transform="translate(105,-115)"><use href="#scale-shape"/></g>
-    <g transform="translate(155,-100)"><use href="#scale-shape"/></g>
-    <g transform="translate(200,-80)"><use href="#scale-shape"/></g>
-
-    <!-- ряд снизу -->
-    <g transform="translate(-220,110)"><use href="#scale-shape"/></g>
-    <g transform="translate(-180,130)"><use href="#scale-shape"/></g>
-    <g transform="translate(-130,145)"><use href="#scale-shape"/></g>
-    <g transform="translate(-80,155)"><use href="#scale-shape"/></g>
-    <g transform="translate(-30,160)"><use href="#scale-shape"/></g>
-    <g transform="translate(30,160)"><use href="#scale-shape"/></g>
-    <g transform="translate(80,155)"><use href="#scale-shape"/></g>
-    <g transform="translate(130,145)"><use href="#scale-shape"/></g>
-    <g transform="translate(180,130)"><use href="#scale-shape"/></g>
-    <g transform="translate(220,110)"><use href="#scale-shape"/></g>
-
-    <!-- 2-й ряд снизу -->
-    <g transform="translate(-200,80)"><use href="#scale-shape"/></g>
-    <g transform="translate(-155,100)"><use href="#scale-shape"/></g>
-    <g transform="translate(-105,115)"><use href="#scale-shape"/></g>
-    <g transform="translate(-55,125)"><use href="#scale-shape"/></g>
-    <g transform="translate(0,130)"><use href="#scale-shape"/></g>
-    <g transform="translate(55,125)"><use href="#scale-shape"/></g>
-    <g transform="translate(105,115)"><use href="#scale-shape"/></g>
-    <g transform="translate(155,100)"><use href="#scale-shape"/></g>
-    <g transform="translate(200,80)"><use href="#scale-shape"/></g>
-
-    <!-- Боковые ряды -->
-    <g transform="translate(-260,-30)"><use href="#scale-shape"/></g>
-    <g transform="translate(-275,0)"><use href="#scale-shape"/></g>
-    <g transform="translate(-260,30)"><use href="#scale-shape"/></g>
-    <g transform="translate(260,-30)"><use href="#scale-shape"/></g>
-    <g transform="translate(275,0)"><use href="#scale-shape"/></g>
-    <g transform="translate(260,30)"><use href="#scale-shape"/></g>
+  <!-- Глаз: один сплошной круг + slit. Без век, без рогов, без огня. -->
+  <g transform="translate(240,200)">
+    <circle r="120" fill="url(#iris)"/>
+    <ellipse rx="14" ry="100" fill="#000"/>
+    <!-- единственный блик -->
+    <circle cx="-40" cy="-50" r="14" fill="#fff7ed" opacity="0.85"/>
   </g>
 
-  <!-- ===== Драконий глаз: острая, угловатая форма ===== -->
-  <g transform="translate(280,200)" filter="url(#soft-glow)">
-    <!-- Внешнее веко с острыми углами -->
-    <path d="M -240 0
-             L -170 -45 L -100 -75 L -30 -85
-             L 30 -85   L 100 -75 L 170 -45 L 240 0
-             L 170 45   L 100 75  L 30 85
-             L -30 85   L -100 75 L -170 45
-             Z"
-          fill="url(#lid)" stroke="#fbbf24" stroke-width="1.5"/>
-
-    <!-- Внутренняя обводка для «мокроты» -->
-    <path d="M -230 0
-             L -163 -42 L -96 -71 L -28 -80
-             L 28 -80   L 96 -71  L 163 -42 L 230 0
-             L 163 42   L 96 71   L 28 80
-             L -28 80   L -96 71  L -163 42
-             Z"
-          fill="none" stroke="#dc2626" stroke-width="0.6" opacity="0.85"/>
-
-    <!-- Радужка -->
-    <circle r="92" fill="url(#dragon-iris)"/>
-
-    <!-- Концентрические кольца -->
-    <circle r="90" fill="none" stroke="#fbbf24" stroke-width="0.6" opacity="0.5"/>
-    <circle r="74" fill="none" stroke="#7f1d1d" stroke-width="1"   opacity="0.7"/>
-    <circle r="58" fill="none" stroke="#fbbf24" stroke-width="0.4" opacity="0.4"/>
-    <circle r="38" fill="none" stroke="#450a0a" stroke-width="0.6" opacity="0.55"/>
-
-    <!-- Радиальные «волокна» радужки -->
-    <g stroke="#7f1d1d" stroke-width="0.7" opacity="0.55" clip-path="url(#iris-clip)">
-      <line x1="0"   y1="-88" x2="0"   y2="-22"/>
-      <line x1="0"   y1="88"  x2="0"   y2="22"/>
-      <line x1="-88" y1="0"   x2="-22" y2="0"/>
-      <line x1="88"  y1="0"   x2="22"  y2="0"/>
-      <line x1="-62" y1="-62" x2="-15" y2="-15"/>
-      <line x1="62"  y1="-62" x2="15"  y2="-15"/>
-      <line x1="-62" y1="62"  x2="-15" y2="15"/>
-      <line x1="62"  y1="62"  x2="15"  y2="15"/>
-      <line x1="-44" y1="-76" x2="-10" y2="-19"/>
-      <line x1="44"  y1="-76" x2="10"  y2="-19"/>
-      <line x1="-44" y1="76"  x2="-10" y2="19"/>
-      <line x1="44"  y1="76"  x2="10"  y2="19"/>
-      <line x1="-76" y1="-44" x2="-19" y2="-10"/>
-      <line x1="76"  y1="-44" x2="19"  y2="-10"/>
-      <line x1="-76" y1="44"  x2="-19" y2="10"/>
-      <line x1="76"  y1="44"  x2="19"  y2="10"/>
-    </g>
-
-    <!-- Узкий вертикальный slit-зрачок -->
-    <ellipse rx="10" ry="80" fill="url(#pupil)"/>
-    <ellipse rx="6"  ry="74" fill="#000"/>
-    <ellipse rx="2.5" ry="55" fill="#1a1a1a" opacity="0.7"/>
-
-    <!-- Specular highlights -->
-    <g clip-path="url(#iris-clip)">
-      <ellipse cx="-26" cy="-38" rx="14" ry="20" fill="#fff7ed" opacity="0.88"/>
-      <ellipse cx="-26" cy="-38" rx="8"  ry="12" fill="#ffffff" opacity="0.95"/>
-      <circle  cx="22"  cy="28"  r="4"  fill="#fef3c7" opacity="0.7"/>
-    </g>
-  </g>
-
-  <!-- Шипы / роговые наросты по углам глаза -->
-  <g transform="translate(280,200)" fill="#7f1d1d" stroke="#fbbf24" stroke-width="0.8">
-    <!-- Левый «угол» -->
-    <polygon points="-240,0 -270,-12 -290,-3 -278,5 -270,14"/>
-    <!-- Правый «угол» -->
-    <polygon points="240,0 270,-12 290,-3 278,5 270,14"/>
-  </g>
-
-  <!-- Лучи свечения -->
-  <g transform="translate(280,200)" stroke="#dc2626" stroke-width="1"
-     stroke-linecap="round" opacity="0.5">
-    <line x1="0"   y1="-160" x2="0"   y2="-200"/>
-    <line x1="0"   y1="160"  x2="0"   y2="200"/>
-    <line x1="-100" y1="-150" x2="-130" y2="-185"/>
-    <line x1="100"  y1="-150" x2="130"  y2="-185"/>
-    <line x1="-100" y1="150"  x2="-130" y2="185"/>
-    <line x1="100"  y1="150"  x2="130"  y2="185"/>
-  </g>
-
-  <!-- ===== Текст ===== -->
-  <text x="560" y="160" fill="#fef3c7" font-size="74" font-weight="900" letter-spacing="6">ГЛАЗ</text>
-  <text x="560" y="240" fill="#dc2626" font-size="74" font-weight="900" letter-spacing="6">ДЬЯВОЛА</text>
-
-  <text x="562" y="278" fill="#fbbf24" font-size="14" font-weight="700" letter-spacing="3">DEVIL'S EYE</text>
-  <text x="562" y="298" fill="#94a3b8" font-size="14" font-weight="500">
-    OSINT · Russian intel layer · MCP-native · MIT
+  <!-- Текст -->
+  <text x="500" y="170" fill="#fef3c7" font-size="80" font-weight="900" letter-spacing="6">ГЛАЗ</text>
+  <text x="500" y="250" fill="#dc2626" font-size="80" font-weight="900" letter-spacing="6">ДЬЯВОЛА</text>
+  <text x="502" y="290" fill="#94a3b8" font-size="15" font-weight="500" letter-spacing="2">
+    OSINT · Russian intel · MCP-native · MIT
   </text>
 
-  <g font-size="12.5" fill="#cbd5e1" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="600">
-    <rect x="562" y="318" width="118" height="28" rx="6" fill="#1c0303" stroke="#7f1d1d"/>
-    <text x="572" y="337">12 modules</text>
-
-    <rect x="688" y="318" width="118" height="28" rx="6" fill="#1c0303" stroke="#7f1d1d"/>
-    <text x="698" y="337">65+ regexes</text>
-
-    <rect x="814" y="318" width="125" height="28" rx="6" fill="#1c0303" stroke="#7f1d1d"/>
-    <text x="824" y="337">15 MCP tools</text>
-
-    <rect x="947" y="318" width="100" height="28" rx="6" fill="#1c0303" stroke="#7f1d1d"/>
-    <text x="957" y="337">SARIF CI</text>
-
-    <rect x="1055" y="318" width="100" height="28" rx="6" fill="#7c2d12" stroke="#dc2626"/>
-    <text x="1065" y="337" fill="#fed7aa">RU layer</text>
+  <!-- Чипы -->
+  <g font-size="13" fill="#cbd5e1" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="600">
+    <rect x="500" y="318" width="120" height="30" rx="6" fill="#1c0303" stroke="#7f1d1d"/>
+    <text x="510" y="338">15 modules</text>
+    <rect x="628" y="318" width="120" height="30" rx="6" fill="#1c0303" stroke="#7f1d1d"/>
+    <text x="638" y="338">65+ regexes</text>
+    <rect x="756" y="318" width="120" height="30" rx="6" fill="#1c0303" stroke="#7f1d1d"/>
+    <text x="766" y="338">22 commands</text>
+    <rect x="884" y="318" width="100" height="30" rx="6" fill="#7c2d12" stroke="#dc2626"/>
+    <text x="894" y="338" fill="#fed7aa">RU layer</text>
   </g>
 
   <text x="1170" y="385" text-anchor="end" fill="#475569" font-size="11"
-        font-family="ui-monospace,Menlo,Consolas,monospace">v0.2.0</text>
+        font-family="ui-monospace,Menlo,Consolas,monospace">v0.3.0</text>
 </svg>
